@@ -1,1 +1,1 @@
-![My image](/Users/dhruvsareen/Downloads/er.png)
+![My image](../../Downloads/er.png)
