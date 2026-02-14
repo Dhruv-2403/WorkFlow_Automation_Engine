@@ -1,1 +1,1 @@
-![My image](../../Downloads/er.png)
+![ER Diagram](er.png)
