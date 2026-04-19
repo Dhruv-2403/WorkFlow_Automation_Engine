@@ -102,11 +102,11 @@ function App() {
   return (
     <div className="container">
       <div className="header">
-        <h1>🚀 Workflow Automation Engine</h1>
+        <h1>Workflow Automation Engine</h1>
         <p>Create, manage, and trigger automated workflows</p>
       </div>
 
-      {/* Create Workflow Form */}
+
       <div className="card">
         <h2>Create New Workflow</h2>
         <form onSubmit={createWorkflow}>
@@ -158,7 +158,7 @@ function App() {
         </form>
       </div>
 
-      {/* Workflows List */}
+
       <div className="card">
         <h2>Workflows ({workflows.length})</h2>
         {loading && workflows.length === 0 ? (
@@ -192,7 +192,7 @@ function App() {
         )}
       </div>
 
-      {/* Trigger Event */}
+
       <div className="card trigger-section">
         <h2>⚡ Trigger Event</h2>
         <form onSubmit={handleTriggerEvent}>
@@ -223,7 +223,7 @@ function App() {
         </form>
       </div>
 
-      {/* Response/Error */}
+
       {error && (
         <div className="error">
           <strong>Error:</strong> {error}
