@@ -1,0 +1,6 @@
+
+> workflow_automation_engine@1.0.0 dev
+> ts-node src/index.ts
+
+◇ injected env (2) from .env // tip: ⌘ override existing { override: true }
+[Workflow Engine] running on http://localhost:3000

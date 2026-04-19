@@ -17,7 +17,7 @@ export class WorkflowController {
   async activate(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const workflow = await this.workflowService.activateWorkflow(id!);
+      const workflow = await this.workflowService.activateWorkflow(id as string);
       res.json(workflow);
     } catch (error: any) {
       res.status(400).json({ error: error.message });

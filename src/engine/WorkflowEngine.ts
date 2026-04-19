@@ -26,7 +26,7 @@ export class WorkflowEngine {
     
     // Filter by trigger type (simplified for demonstration)
     const matchingWorkflows = activeWorkflows.filter(w => 
-      w.triggers.some(t => t.eventType === eventType)
+      (w as any).triggers?.some((t: any) => t.eventType === eventType)
     );
 
     console.log(`[WorkflowEngine] Found ${matchingWorkflows.length} workflows to execute.`);
@@ -51,7 +51,7 @@ export class WorkflowEngine {
     });
 
     try {
-      for (const action of workflow.actions) {
+      for (const action of (workflow as any).actions) {
         console.log(`[WorkflowEngine] Executing action: ${action.type}`);
         const strategy = ActionFactory.getStrategy(action.type);
         await strategy.execute(action.metadata);
