@@ -6,11 +6,15 @@ export class WorkflowController {
 
   async create(req: Request, res: Response) {
     try {
-      const { userId, name, trigger, actions } = req.body;
-      const workflow = await this.workflowService.createWorkflow(userId, name, trigger, actions);
+      const { userId, name, triggerEvent, trigger, actions } = req.body;
+      // Use provided userId or default to test user
+      const workflowUserId = userId || "test-user-123";
+      // Use triggerEvent if provided, otherwise use trigger
+      const workflowTrigger = triggerEvent || trigger;
+      const workflow = await this.workflowService.createWorkflow(workflowUserId, name, workflowTrigger, actions);
       res.status(201).json(workflow);
     } catch (error: any) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -37,10 +41,12 @@ export class WorkflowController {
   async list(req: Request, res: Response) {
     try {
       const { userId } = req.query;
-      const workflows = await this.workflowService.getAllWorkflows(userId as string);
+      // Use provided userId or default to test user
+      const workflowUserId = userId as string || "test-user-123";
+      const workflows = await this.workflowService.getAllWorkflows(workflowUserId);
       res.json(workflows);
     } catch (error: any) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 }

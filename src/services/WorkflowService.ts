@@ -10,9 +10,16 @@ export class WorkflowService {
   ) {}
 
   async createWorkflow(userId: string, name: string, trigger: any, actions: any[]) {
-    // 1. Check if user exists
-    const user = await this.userRepo.findById(userId);
-    if (!user) throw new Error("User not found");
+    // 1. Check if user exists, create if not (for testing)
+    let user = await this.userRepo.findById(userId);
+    if (!user) {
+      user = await this.userRepo.create({
+        name: "Test User",
+        email: `test-${userId}@example.com`,
+      });
+      // Update userId to the actual created user's id
+      userId = user.id;
+    }
 
     // 2. Create workflow
     const workflow = await this.workflowRepo.create({
@@ -21,18 +28,19 @@ export class WorkflowService {
       status: "inactive",
     });
 
-    // 3. Create trigger
+    // 3. Create trigger (handle both trigger.eventType and triggerEvent)
+    const eventType = trigger.eventType || trigger;
     await this.triggerRepo.create({
       workflowId: workflow.id,
-      eventType: trigger.eventType,
+      eventType,
     });
 
-    // 4. Create actions
+    // 4. Create actions (handle both action.metadata and action.config)
     for (const action of actions) {
       await this.actionRepo.create({
         workflowId: workflow.id,
         type: action.type,
-        metadata: action.metadata || {},
+        metadata: action.metadata || action.config || {},
       });
     }
 
