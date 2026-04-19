@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  workflows Workflow[]
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model Workflow {
+  id            String         @id @default(uuid())
+  userId        String         @map("user_id")
+  user          User           @relation(fields: [userId], references: [id])
+  name          String
+  status        String         @default("inactive")
+  triggers      Trigger[]
+  actions       Action[]
+  executionLogs ExecutionLog[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+
+  @@map("workflows")
+}
+
+model Trigger {
+  id         String   @id @default(uuid())
+  workflowId String   @unique @map("workflow_id")
+  workflow   Workflow @relation(fields: [workflowId], references: [id])
+  eventType  String   @map("event_type")
+
+  @@map("triggers")
+}
+
+model Action {
+  id         String   @id @default(uuid())
+  workflowId String   @map("workflow_id")
+  workflow   Workflow @relation(fields: [workflowId], references: [id])
+  type       String
+  metadata   Json?    @default("{}")
+
+  @@map("actions")
+}
+
+model ExecutionLog {
+  id         String   @id @default(uuid())
+  workflowId String   @map("workflow_id")
+  workflow   Workflow @relation(fields: [workflowId], references: [id])
+  status     String
+  executedAt DateTime @default(now()) @map("executed_at")
+
+  @@map("execution_logs")
+}
