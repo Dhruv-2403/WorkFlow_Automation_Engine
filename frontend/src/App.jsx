@@ -40,7 +40,7 @@ function App() {
     setLoading(true)
     try {
       const config = JSON.parse(actionConfig)
-      const res = await fetch('https://workflow-automation-engine-7mwb.onrender.com/workflows', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/workflows`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -64,7 +64,7 @@ function App() {
   const activateWorkflow = async (id) => {
     setLoading(true)
     try {
-      const res = await fetch(`https://workflow-automation-engine-7mwb.onrender.com/workflows/${id}/activate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/workflows/${id}/activate`, {
         method: 'POST'
       })
       const data = await res.json()

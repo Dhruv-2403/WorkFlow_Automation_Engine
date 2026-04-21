@@ -20,6 +20,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({
   origin: [
     'https://workflow-automation-engine-7mwb.onrender.com',
+    'https://work-flow-automation-engine.vercel.app',
     'http://localhost:5173',
     'http://localhost:5176',
     'https://*.netlify.app'
