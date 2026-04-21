@@ -13,10 +13,17 @@ export class WorkflowService {
     // 1. Check if user exists, create if not (for testing)
     let user = await this.userRepo.findById(userId);
     if (!user) {
-      user = await this.userRepo.create({
-        name: "Test User",
-        email: `test-${userId}@example.com`,
-      });
+      // Try to find by email first to avoid duplicate email error
+      const email = `test-${userId}@example.com`;
+      let existingUser = await this.userRepo.findByEmail(email);
+      if (existingUser) {
+        user = existingUser;
+      } else {
+        user = await this.userRepo.create({
+          name: "Test User",
+          email: email,
+        });
+      }
       // Update userId to the actual created user's id
       userId = user.id;
     }
