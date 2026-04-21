@@ -25,7 +25,7 @@ function App() {
   const fetchWorkflows = async () => {
     setLoading(true)
     try {
-      const res = await apiFetch('/workflows')
+      const res = await fetch('https://workflow-automation-engine-7mwb.onrender.com/workflows')
       const data = await res.json()
       setWorkflows(data)
       setError('')
@@ -40,7 +40,7 @@ function App() {
     setLoading(true)
     try {
       const config = JSON.parse(actionConfig)
-      const res = await apiFetch('/workflows', {
+      const res = await fetch('https://workflow-automation-engine-7mwb.onrender.com/workflows', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -64,7 +64,7 @@ function App() {
   const activateWorkflow = async (id) => {
     setLoading(true)
     try {
-      const res = await apiFetch(`/workflows/${id}/activate`, {
+      const res = await fetch(`https://workflow-automation-engine-7mwb.onrender.com/workflows/${id}/activate`, {
         method: 'POST'
       })
       const data = await res.json()
@@ -82,7 +82,7 @@ function App() {
     setLoading(true)
     try {
       const payload = JSON.parse(triggerPayload)
-      const res = await apiFetch('/events', {
+      const res = await fetch('https://workflow-automation-engine-7mwb.onrender.com/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
