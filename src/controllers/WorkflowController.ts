@@ -7,9 +7,9 @@ export class WorkflowController {
   async create(req: Request, res: Response) {
     try {
       const { userId, name, triggerEvent, trigger, actions } = req.body;
-      // Use provided userId or default to test user
+
       const workflowUserId = userId || "test-user-123";
-      // Use triggerEvent if provided, otherwise use trigger
+      
       const workflowTrigger = triggerEvent || trigger;
       const workflow = await this.workflowService.createWorkflow(workflowUserId, name, workflowTrigger, actions);
       res.status(201).json(workflow);
