@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { apiFetch } from './lib/api'
 
 function App() {
   const [workflows, setWorkflows] = useState([])
@@ -24,7 +25,7 @@ function App() {
   const fetchWorkflows = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/workflows')
+      const res = await apiFetch('/workflows')
       const data = await res.json()
       setWorkflows(data)
       setError('')
@@ -39,7 +40,7 @@ function App() {
     setLoading(true)
     try {
       const config = JSON.parse(actionConfig)
-      const res = await fetch('/workflows', {
+      const res = await apiFetch('/workflows', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -63,7 +64,7 @@ function App() {
   const activateWorkflow = async (id) => {
     setLoading(true)
     try {
-      const res = await fetch(`/workflows/${id}/activate`, {
+      const res = await apiFetch(`/workflows/${id}/activate`, {
         method: 'POST'
       })
       const data = await res.json()
@@ -81,7 +82,7 @@ function App() {
     setLoading(true)
     try {
       const payload = JSON.parse(triggerPayload)
-      const res = await fetch('/events', {
+      const res = await apiFetch('/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
