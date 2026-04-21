@@ -44,8 +44,9 @@ export class WorkflowController {
       // Use provided userId or default to test user
       const workflowUserId = userId as string || "test-user-123";
       const workflows = await this.workflowService.getAllWorkflows(workflowUserId);
-      res.json(workflows);
+      res.json(Array.isArray(workflows) ? workflows : []);
     } catch (error: any) {
+      console.error('Error fetching workflows:', error);
       res.status(500).json({ error: error.message });
     }
   }

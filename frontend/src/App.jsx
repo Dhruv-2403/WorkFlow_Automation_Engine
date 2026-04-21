@@ -25,12 +25,14 @@ function App() {
   const fetchWorkflows = async () => {
     setLoading(true)
     try {
-      const res = await fetch('https://workflow-automation-engine-7mwb.onrender.com/workflows')
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/workflows`)
       const data = await res.json()
-      setWorkflows(data)
+      // Ensure data is an array
+      setWorkflows(Array.isArray(data) ? data : [])
       setError('')
     } catch (err) {
       setError('Failed to fetch workflows: ' + err.message)
+      setWorkflows([])
     }
     setLoading(false)
   }
