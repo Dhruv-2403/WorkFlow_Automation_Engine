@@ -23,9 +23,9 @@ export class WorkflowEngine {
     // 1. Find all active workflows that have this trigger type
     // In a real system, we'd query by trigger event type
     const activeWorkflows = await this.workflowRepo.findActiveWorkflows();
-    
+
     // Filter by trigger type (simplified for demonstration)
-    const matchingWorkflows = activeWorkflows.filter(w => 
+    const matchingWorkflows = activeWorkflows.filter(w =>
       (w as any).triggers?.some((t: any) => t.eventType === eventType)
     );
 

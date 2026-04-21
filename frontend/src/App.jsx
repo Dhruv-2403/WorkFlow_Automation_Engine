@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { apiFetch } from './lib/api'
 
 function App() {
   const [workflows, setWorkflows] = useState([])
@@ -7,17 +6,20 @@ function App() {
   const [error, setError] = useState('')
   const [response, setResponse] = useState('')
 
-  // Form states
+
   const [workflowName, setWorkflowName] = useState('')
   const [workflowTriggerEvent, setWorkflowTriggerEvent] = useState('USER_SIGNUP')
   const [actionType, setActionType] = useState('EMAIL')
   const [actionConfig, setActionConfig] = useState('{"recipient": "test@example.com", "subject": "Test", "body": "Test body"}')
 
-  // Trigger form states
+
   const [eventType, setEventType] = useState('USER_SIGNUP')
   const [triggerPayload, setTriggerPayload] = useState('{"userId": "123", "email": "test@example.com"}')
 
-  // Fetch workflows on load
+
+  const API_URL = import.meta.env.VITE_API_URL || 'https://workflow-automation-engine-7mwb.onrender.com'
+
+
   useEffect(() => {
     fetchWorkflows()
   }, [])
@@ -25,9 +27,8 @@ function App() {
   const fetchWorkflows = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/workflows`)
+      const res = await fetch(`${API_URL}/workflows`)
       const data = await res.json()
-      // Ensure data is an array
       setWorkflows(Array.isArray(data) ? data : [])
       setError('')
     } catch (err) {
@@ -42,7 +43,7 @@ function App() {
     setLoading(true)
     try {
       const config = JSON.parse(actionConfig)
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/workflows`, {
+      const res = await fetch(`${API_URL}/workflows`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -66,7 +67,7 @@ function App() {
   const activateWorkflow = async (id) => {
     setLoading(true)
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/workflows/${id}/activate`, {
+      const res = await fetch(`${API_URL}/workflows/${id}/activate`, {
         method: 'POST'
       })
       const data = await res.json()
@@ -84,7 +85,7 @@ function App() {
     setLoading(true)
     try {
       const payload = JSON.parse(triggerPayload)
-      const res = await fetch('https://workflow-automation-engine-7mwb.onrender.com/events', {
+      const res = await fetch(`${API_URL}/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -108,7 +109,6 @@ function App() {
         <h1>Workflow Automation Engine</h1>
         <p>Create, manage, and trigger automated workflows</p>
       </div>
-
 
       <div className="card">
         <h2>Create New Workflow</h2>
@@ -161,7 +161,6 @@ function App() {
         </form>
       </div>
 
-
       <div className="card">
         <h2>Workflows ({workflows.length})</h2>
         {loading && workflows.length === 0 ? (
@@ -195,7 +194,6 @@ function App() {
         )}
       </div>
 
-
       <div className="card trigger-section">
         <h2>⚡ Trigger Event</h2>
         <form onSubmit={handleTriggerEvent}>
@@ -225,7 +223,6 @@ function App() {
           </button>
         </form>
       </div>
-
 
       {error && (
         <div className="error">

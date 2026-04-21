@@ -42,7 +42,7 @@ export class WorkflowService {
       eventType,
     });
 
-    // 4. Create actions (handle both action.metadata and action.config)
+
     for (const action of actions) {
       await this.actionRepo.create({
         workflowId: workflow.id,
